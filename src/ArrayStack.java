@@ -4,31 +4,31 @@ public class ArrayStack<T> implements Stack<T> {
 
     @SuppressWarnings("unchecked")
     public ArrayStack() {
-        items = (T[]) new Object[1];
+        items = (T[]) new Object[1000];
         n = 0;
     }
 
     @Override
     public void push(T item) {
-        // TODO: If the array is full, double its capacity; then store item at index n and increment n.
+        items[n++] = item;
     }
 
     @Override
     public T pop() {
-        // TODO: Decrement n, save and return that item, and set the popped slot to null to avoid loitering.
-        return null;
+        T t = items[--n];
+        items[n] = null;
+
+        return t;
     }
 
     @Override
     public boolean isEmpty() {
-        // TODO: Return true when n is zero.
-        return false;
+        return n == 0;
     }
 
     @Override
     public int size() {
-        // TODO: Return the number of items currently in the stack.
-        return 0;
+        return n;
     }
 
     /**
@@ -39,7 +39,30 @@ public class ArrayStack<T> implements Stack<T> {
     public static boolean isValid(String s) {
         // TODO: Use an ArrayStack<Character> to check matching brackets. Push opening brackets;
         // for each closer, check that the most recent opener has the matching type.
-        return false;
+
+        ArrayStack<Character> stack = new ArrayStack<>();
+
+        for (int i = 0; i < s.length(); i++) {
+            char c = s.charAt(i);
+
+            if (c == '(' || c == '{' || c == '[') {
+                stack.push(c);
+            } else {
+                char p = stack.pop();
+
+                if (p == '(' && c != ')') {
+                    return false;
+                }
+                if (p == '{' && c != '}') {
+                    return false;
+                }
+                if (p == '[' && c != ']') {
+                    return false;
+                }
+            }
+        }
+
+        return stack.isEmpty();
     }
 
     static void check(String label, Object actual, Object expected) {
