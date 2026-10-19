@@ -57,17 +57,31 @@ public class LinkedListStack<T> implements Stack<T> {
         LinkedListStack<Integer> stack = new LinkedListStack<>();
 
         for (int i = 0; i < tokens.length; i++) {
-            Character c = tokens[i].charAt(0);
+            String c = tokens[i];
 
-            if (Character.getNumericValue(c) > -1) {
-                stack.push(Character.getNumericValue(c));
+            if (!(c.equals("+") || c.equals("-") || c.equals("*") || c.equals("/"))) {
+                stack.push(Integer.parseInt(c));
             }
             else {
+                int a = stack.pop();
+                int b = stack.pop();
 
+                if (c.equals("+")) {
+                    stack.push(a + b);
+                }
+                if (c.equals("-")) {
+                    stack.push(b - a);
+                }
+                if (c.equals("*")) {
+                    stack.push(a * b);
+                }
+                if (c.equals("/")) {
+                    stack.push(b / a);
+                }
             }
         }
 
-        return 0;
+        return stack.pop();
     }
 
     static void check(String label, Object actual, Object expected) {
